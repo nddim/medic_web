@@ -1,1 +1,154 @@
-<p>homepage works!</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light ">
+  <div class="container-fluid">
+    <div class="ml-auto">
+      <button (click)="logOut()" class="btn btn-danger" type="button">Logout</button>
+    </div>
+    <div class="ml-auto">
+      <button (click)="openAddUser=true" class="btn btn-primary" type="button">Add New User</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Table -->
+<div class="container mt-4">
+  <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Username</th>
+      <th>Last Login Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of usersPrikazi" (click)="openUserInfo=true; getUserById(user.id)">
+      <td>{{user.id}}</td>
+      <td>{{user.name}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.lastLoginDate|date}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="openUserInfo" class="modal fade show" id="exampleModalLive" tabindex="-1"
+     aria-labelledby="exampleModalLiveLabel" aria-modal="true" role="dialog" style="display: block; ">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLiveLabel">Edit user </h5>
+        <button type="button" class="btn-close" (click)="openUserInfo=false" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-2">
+            <div class="mb-3">
+              <label class="form-label">Id</label>
+              <input [(ngModel)]="selectedUser.id" class="form-control" type="number" disabled >
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input [(ngModel)]="selectedUser.name"  class="form-control" type="text" placeholder="Name"/>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input [(ngModel)]="selectedUser.username" class="form-control" type="text" placeholder="Username"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Date of birth</label>
+              <input [(ngModel)]="selectedDateOfBirthstring" class="form-control" type="date" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Last login date</label>
+              <input [value]="selectedLastLoginDateString" class="form-control" type="date" disabled />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="form-label">Orders</label>
+              <input [(ngModel)]="selectedUser.orders" min="0" max="10" class="form-control" type="number" placeholder="0"/>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="mb-3">
+              <label class="form-label">Status</label>
+              <input [(ngModel)]="selectedUser.status" class="form-control" type="text" disabled placeholder="Status"/>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div *ngIf="selectedUser.status!='Blocked'" class="mb-3">
+              <label class="form-label">Block user</label>
+              <button (click)="blockById(selectedUser.id)" class="btn btn-danger" type="button">Block user</button>
+            </div>
+          </div>
+          <div class="mb-3 col-lg-12">
+            <img *ngIf="editedImage" [src]="editedImage" height="180px">
+            <input id="slika-edit" type="file" accept="image/*" (change)="generisiPreviewSlikeEdit()" ><!---->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="openUserInfo=false" class="btn btn-secondary" >Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateUser()" >Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="openAddUser" class="modal fade show" id="exampleModalLive2" tabindex="-1"
+     aria-labelledby="exampleModalLiveLabel" aria-modal="true" role="dialog" style="display: block; ">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLiveLabel2">Add user </h5>
+        <button type="button" class="btn-close" (click)="openAddUser=false" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input [(ngModel)]="newUser.name"  class="form-control" type="text" placeholder="Name"/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input [(ngModel)]="newUser.username" class="form-control" type="text" placeholder="Username"/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input [(ngModel)]="newUser.password"  class="form-control" type="text" placeholder="Name"/>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Date of birth</label>
+              <input [ngModel]="newDateOfBirth" class="form-control" type="date" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Orders</label>
+              <input [(ngModel)]="newUser.orders" min="0" max="10"  class="form-control" type="number" placeholder="0"/>
+            </div>
+          </div>
+          <div class="mb-3 col-lg-12">
+            <img *ngIf="novaSlika" [src]="novaSlika" height="180px">
+            <input id="slika-input" type="file" accept="image/*" (change)="generisiPreviewSlike()" ><!---->
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" (click)="openAddUser=false" class="btn btn-secondary" >Close</button>
+        <button type="button" class="btn btn-primary" (click)="registerUser()" >Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

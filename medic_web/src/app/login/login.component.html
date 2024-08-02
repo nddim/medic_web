@@ -1,1 +1,23 @@
-<p>login works!</p>
+<div class="container">
+  <h2>Login</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="signIn()">
+    <!-- Username input -->
+    <div class="form-outline mb-2">
+      <label class="form-label" for="form2Example1">Username: </label>
+      <input formControlName="username" [ngClass]="{'is-invalid':submitted && registerForm.controls['username'].errors}"
+             type="text" id="form2Example1" class="form-control" />
+    </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-2">
+      <label class="form-label" for="password">Password: </label>
+      <input (keyup.enter)="onEnter($event)" formControlName="password"
+             [ngClass]="{'is-invalid':submitted && registerForm.controls['password'].errors}"
+             type="password" id="password" class="form-control" />
+    </div>
+
+    <!-- Submit button -->
+    <button  (click)="signIn()" type="button" class="btn btn-primary btn-block mb-4" >Prijavi se</button>
+  </form>
+
+</div>

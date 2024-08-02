@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.plavi-snackbar{
+  --mdc-snackbar-container-color: #007bff;
+  --mat-mdc-snack-bar-button-color: white;
+  --mat-snack-bar-button-color: white;
+}
+.crveni-snackbar{
+  --mdc-snackbar-container-color: red;
+  --mat-mdc-snack-bar-button-color: white;
+  --mat-snack-bar-button-color: white;
+}
+.right-crveni-snackbar{
+  --mdc-snackbar-container-color: red;
+  --mat-mdc-snack-bar-button-color: white;
+  --mat-snack-bar-button-color: white;
+}
