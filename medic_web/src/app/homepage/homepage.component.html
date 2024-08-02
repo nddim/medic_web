@@ -21,14 +21,12 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Sample row -->
     <tr *ngFor="let user of usersPrikazi" (click)="openUserInfo=true; getUserById(user.id)">
       <td>{{user.id}}</td>
       <td>{{user.name}}</td>
       <td>{{user.username}}</td>
       <td>{{user.lastLoginDate|date}}</td>
     </tr>
-    <!-- More rows as needed -->
     </tbody>
   </table>
 </div>
@@ -76,20 +74,24 @@
           <div class="col-md-3">
             <div class="mb-3">
               <label class="form-label">Orders</label>
-              <input [(ngModel)]="selectedUser.orders" class="form-control" type="number" placeholder="0"/>
+              <input [(ngModel)]="selectedUser.orders" min="0" max="10" class="form-control" type="number" placeholder="0"/>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-5">
             <div class="mb-3">
               <label class="form-label">Status</label>
               <input [(ngModel)]="selectedUser.status" class="form-control" type="text" disabled placeholder="Status"/>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div *ngIf="selectedUser.status!='Blocked'" class="mb-3">
               <label class="form-label">Block user</label>
-              <button  class="btn btn-danger" type="button">Block user</button>
+              <button (click)="blockById(selectedUser.id)" class="btn btn-danger" type="button">Block user</button>
             </div>
+          </div>
+          <div class="mb-3 col-lg-12">
+            <img *ngIf="editedImage" [src]="editedImage" height="180px">
+            <input id="slika-edit" type="file" accept="image/*" (change)="generisiPreviewSlikeEdit()" ><!---->
           </div>
         </div>
       </div>
@@ -132,11 +134,17 @@
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">Orders</label>
-              <input [(ngModel)]="newUser.orders" class="form-control" type="number" placeholder="0"/>
+              <input [(ngModel)]="newUser.orders" min="0" max="10"  class="form-control" type="number" placeholder="0"/>
             </div>
           </div>
+          <div class="mb-3 col-lg-12">
+            <img *ngIf="novaSlika" [src]="novaSlika" height="180px">
+            <input id="slika-input" type="file" accept="image/*" (change)="generisiPreviewSlike()" ><!---->
+          </div>
         </div>
+
       </div>
+
       <div class="modal-footer">
         <button type="button" (click)="openAddUser=false" class="btn btn-secondary" >Close</button>
         <button type="button" class="btn btn-primary" (click)="registerUser()" >Save changes</button>

@@ -15,7 +15,12 @@ export class HomepageDataService {
       const headers = new HttpHeaders({'Content-Type': 'application/json', 'my-auth-token': token});
       return this.http.get<UsersGetAllResponse>(url, {'headers' : headers});
     }
-
+    blockById(id:number){
+      var url = MojConfig.adresa_local+'block/'+id.toString();
+      var token = this.authService.getAuthToken().value;
+      const headers = new HttpHeaders({'Content-Type': 'application/json', 'my-auth-token': token});
+      return this.http.post(url, {}, {'headers' : headers});
+    }
     getById(id:number){
       var url = MojConfig.adresa_local + 'users/details/' + id.toString();
       var token = this.authService.getAuthToken().value;
@@ -34,7 +39,12 @@ export class HomepageDataService {
       const headers = new HttpHeaders({'Content-Type': 'application/json', 'my-auth-token': token});
       return this.http.post(url, user, {'headers' : headers});
     }
-
+    editImage(image:UserImage){
+      let url = MojConfig.adresa_local + 'update-image';
+      var token = this.authService.getAuthToken().value;
+      const headers = new HttpHeaders({'Content-Type': 'application/json', 'my-auth-token': token});
+      return this.http.post(url, image, {'headers' : headers});
+    }
 }
 export type UsersGetAllResponse = UsersGetResponse[]
 
@@ -55,4 +65,8 @@ export interface UserPost {
   orders: number
   slikaUrl: string
   dateOfBirth: string
+}
+export interface UserImage{
+  id:number
+  slika:string
 }

@@ -9,15 +9,6 @@ export class AuthService {
   constructor(private dataService : AuthDataService) {
   }
 
-  /*getAuthToken(){
-    let tokenString = window.localStorage.getItem("my-auth-token")??"";
-    try {
-      return JSON.parse(tokenString);
-    }
-    catch(error){
-      return null;
-    }
-  }*/
   getAuthToken(): any {
     if (typeof window !== 'undefined') {
       // window is available, proceed with accessing localStorage

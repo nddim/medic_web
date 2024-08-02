@@ -3,9 +3,6 @@ import {Injectable} from "@angular/core";
 import {MojConfig} from "../../../assets/moj-config";
 import {AuthToken} from "./authToken";
 
-
-
-
 @Injectable({providedIn: 'root'})
 export class AuthDataService {
   constructor(private http:HttpClient) {

@@ -4,9 +4,9 @@ import {CommonModule, NgClass} from "@angular/common";
 import {LoginAuthRequest} from "../helper/auth/authDataService";
 import {AuthService} from "../helper/auth/myAuthService";
 import {Router} from "@angular/router";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 import {catchError, of} from "rxjs";
 import {HttpClientModule} from "@angular/common/http";
+import {SnackbarBar} from "../helper/mat-snackbar/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -30,7 +30,8 @@ export class LoginComponent {
 
   constructor(private formBuilder: FormBuilder,
               private authService:AuthService,
-              private router:Router) {
+              private router:Router,
+              private snackBar:SnackbarBar) {
 
   }
   ngOnInit(): void {
@@ -47,12 +48,13 @@ export class LoginComponent {
     this.authService.signIn(this.loginRequest).pipe(
       catchError(error => {
         if (error.status === 400) {
-          alert("Bad request error: Invalid username or password.");
+          this.snackBar.openSnackBarCrveni("Bad request error: Invalid username or password.")
         } else if (error.status === 404) {
-          alert("Forbidden: You do not have the required permissions.");
+          this.snackBar.openSnackBarCrveni("Forbidden: You do not have the required permissions.")
         } else {
-          alert("An unexpected error occurred.");
+          this.snackBar.openSnackBarCrveni("An unexpected error occurred.")
         }
+
         return of(null);
       })
     ).subscribe(async x=>{
@@ -61,7 +63,8 @@ export class LoginComponent {
         this.loginRequest.username = "";
         this.loginRequest.password = "";
       } else if (x) {
-        this.router.navigate(["/homepage"]);
+        await this.router.navigate(["/homepage"]);
+        this.snackBar.openSnackBarPlavi("Uspjesan login");
       }
     });
 
@@ -73,6 +76,6 @@ export class LoginComponent {
       return;
     }
     console.log("enter kliknut!");
-    await this.signIn();
+     this.signIn();
   }
 }
